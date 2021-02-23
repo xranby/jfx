@@ -34,7 +34,7 @@ LINUX.compileSwing = true;
 LINUX.compileSWT = true;
 
 // Libraries end up in the lib/$OS_ARCH directory for Linux
-LINUX.libDest = "lib"
+LINUX.libDest = "lib/Linux/$OS_ARCH"
 
 // Lambda for naming the generated libs
 LINUX.library = { name -> return (IS_STATIC_BUILD ? "lib${name}.a" : "lib${name}.so") as String }
