@@ -113,6 +113,7 @@ public class NativeLibLoader {
 
     private static void loadLibraryInternal(String libraryName, List<String> dependencies, Class caller) {
         // The search order for native library loading is:
+        // - try load the native library from a architecture subfolder
         // - try to load the native library from the same folder as this jar
         //   (only on non-modular builds)
         // - if the native library comes bundled as a resource it is extracted
@@ -122,6 +123,21 @@ public class NativeLibLoader {
         // - the library is loaded via System#loadLibrary
         // - on iOS native library is staticly linked and detected from the
         //   existence of a JNI_OnLoad_libraryname funtion
+        String osName = System.getProperty("os.name");
+        String archName = System.getProperty("os.arch");
+        String systemLibraryName = System.mapLibraryName(libraryName);
+        String osArchPath = osName + File.separator + archName + File.separator;
+
+        try {    
+            File libFile = new File(osArchPath + systemLibraryName);
+            System.load(libFile.getAbsolutePath());
+            return;
+        } catch (UnsatisfiedLinkError ex){
+            if (verbose) {
+                System.err.println("WARNING: unable to locate jfx natile library at default location: " + osArchPath + systemLibraryName);
+            }
+        }
+
         try {
             // FIXME: JIGSAW -- We should eventually remove this legacy path,
             // since it isn't applicable to Jigsaw.
