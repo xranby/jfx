@@ -189,23 +189,6 @@ public class PlatformImpl {
             return;
         }
 
-        final Module module = PlatformImpl.class.getModule();
-        final ModuleDescriptor moduleDesc = module.getDescriptor();
-        if (!module.isNamed()
-                || !"javafx.graphics".equals(module.getName())
-                || moduleDesc == null
-                || moduleDesc.isAutomatic()
-                || moduleDesc.isOpen()) {
-
-            String warningStr = "Unsupported JavaFX configuration: "
-                + "classes were loaded from '" + module + "'";
-            if (moduleDesc != null) {
-                warningStr += ", isAutomatic: " + moduleDesc.isAutomatic();
-                warningStr += ", isOpen: " + moduleDesc.isOpen();
-            }
-            Logging.getJavaFXLogger().warning(warningStr);
-        }
-
         AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
             applicationType = System.getProperty("com.sun.javafx.application.type");
             if (applicationType == null) applicationType = "";
