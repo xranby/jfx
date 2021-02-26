@@ -40,6 +40,7 @@ class X11GLFactory extends GLFactory {
     // Entries must be in lowercase and null string is a wild card
     // Limit es2 pipe qualification check to supported drivers and GPUs
     private GLGPUInfo preQualificationFilter[] = {
+        new GLGPUInfo("broadcom", null),
         new GLGPUInfo("advanced micro devices", null),
         new GLGPUInfo("ati", null),
         new GLGPUInfo("intel", null),
